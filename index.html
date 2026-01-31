@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<title>فروشگاه ناروین پوز</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:Vazirmatn;background: linear-gradient(135deg, #0f3d2e, #dff1e0);color:#111;}
+header{background:rgba(255,255,255,0.9);border-bottom:1px solid rgba(0,0,0,0.1);}
+header .header-inner{display:flex;align-items:center;gap:12px;padding:10px 20px;position:relative;}
+header img.logo{width:42px;height:42px;object-fit:cover;border-radius:6px;}
+header h1{margin:0;font-size:22px;font-weight:bold;color:#111;}
+#menuToggle{margin-left:auto;cursor:pointer;font-size:28px;color:#111;}
+nav#menu{display:none;flex-direction:column;text-align:center;background:rgba(255,255,255,0.95);}
+nav#menu a{padding:10px;color:#111;text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.1);}
+#cartList{margin-top:10px;max-height:300px;overflow-y:auto;}
+
+/* آیکون کاربر */
+#userIcon{width:42px;height:42px;border-radius:50%;background:#00ffae;color:#003322;display:flex;align-items:center;justify-content:center;font-weight:bold;cursor:pointer;margin-right:10px;}
+#userPanel{display:none;position:absolute;top:60px;right:20px;background:rgba(255,255,255,0.95);padding:15px;border-radius:12px;border:1px solid #00ffae;width:240px;z-index:100;}
+#userPanel p{margin:5px 0;}
+#userPanel button{width:100%;padding:8px;margin-top:10px;background:#00ffae;color:#003322;border:none;border-radius:6px;cursor:pointer;}
+.cart-item{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(0,0,0,0.1);}
+.cart-item span{flex:1;}
+.cart-item button{margin-left:5px;padding:3px 6px;background:#ff4d4d;color:#fff;border:none;border-radius:4px;cursor:pointer;}
+
+/* اسلایدر */
+.slider-container{overflow:hidden;padding:20px;}
+.slider{display:flex;gap:20px;transition: transform 0.6s ease;}
+.card{min-width:260px;background:#fff;border:1px solid #ddd;border-radius:14px;padding:20px;flex-shrink:0;color:#111;box-shadow:0 2px 6px rgba(0,0,0,0.1);}
+.card img{width:100%;height:150px;object-fit:cover;border-radius:10px;margin-bottom:10px;}
+.price{color:#00aa44;font-weight:bold;}
+.card a{display:block;margin-top:10px;padding:8px;background:#00ffae;color:#003322;text-align:center;border-radius:8px;text-decoration:none;font-weight:500;cursor:pointer;}
+.card a.details{background:#eee;color:#111;margin-top:5px;}
+
+/* فرم ثبت اطلاعات کاربر */
+#userFormContainer{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:200;}
+#userForm{background:#fff;padding:20px;border-radius:12px;width:300px;text-align:center;color:#111;}
+#userForm input{width:100%;padding:8px;margin:8px 0;border-radius:6px;border:1px solid #ccc;}
+#userForm button{padding:10px;width:100%;margin-top:10px;background:#00ffae;color:#003322;border:none;border-radius:6px;cursor:pointer;font-weight:bold;}
+
+/* مدال جزئیات محصول */
+#productModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:300;}
+#productContent{background:#fff;padding:20px;border-radius:12px;width:300px;text-align:center;color:#111;}
+#productContent img{max-width:100%;border-radius:10px;margin-bottom:10px;}
+#productContent button{padding:10px;width:100%;margin-top:10px;background:#00ffae;color:#003322;border:none;border-radius:6px;cursor:pointer;font-weight:bold;}
+#closeProduct{background:#ff4d4d;color:#fff;margin-top:10px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <img src="https://i.postimg.cc/XNcpcTWv/Screenshot-2026-01-31-15-28-04-087-com-google-android-googlequicksearchbox-edit.jpg" alt="لوگو" class="logo">
+    <h1>فروشگاه ناروین پوز</h1>
+    <div id="userIcon">👤</div>
+    <div id="menuToggle">☰</div>
+  </div>
+  <nav id="menu">
+    <a href="#">صفحه اصلی</a>
+    <a href="#">پشتیبانی</a>
+    <div id="cartList"></div>
+    <button id="checkoutBtn">تکمیل خرید</button>
+  </nav>
+  <div id="userPanel">
+    <p id="panelUsername"></p>
+    <p id="panelWallet"></p>
+    <button id="closePanel">بستن</button>
+  </div>
+</header>
+
+<!-- اسلایدر دستگاه‌ها -->
+<div class="slider-container">
+  <div class="slider" id="sliderDevices">
+    <div class="card" data-name="کش لس T1 pro" data-price="۳۸,۰۰۰,۰۰۰ تومان" data-img="https://i.postimg.cc/28xYtD96/ksh-ls-syar-T1-pro.jpg">
+      <img src="https://i.postimg.cc/28xYtD96/ksh-ls-syar-T1-pro.jpg" alt="کش لس T1 pro">
+      <h3>کش لس T1 pro</h3><div class="price">۳۸,۰۰۰,۰۰۰ تومان</div>
+      <a class="buy">افزودن به سبد</a>
+      <a class="details" href="#">جزئیات محصول</a>
+    </div>
+    <div class="card" data-name="pax s90" data-price="۷,۰۰۰,۰۰۰ تومان" data-img="https://i.postimg.cc/K8q2Z52F/sfhh-rngy-s90-min.jpg">
+      <img src="https://i.postimg.cc/K8q2Z52F/sfhh-rngy-s90-min.jpg" alt="pax s90">
+      <h3>pax s90</h3><div class="price">۷,۰۰۰,۰۰۰ تومان</div>
+      <a class="buy">افزودن به سبد</a>
+      <a class="details" href="#">جزئیات محصول</a>
+    </div>
+    <div class="card" data-name="amp 9000" data-price="۱۰,۰۰۰,۰۰۰ تومان" data-img="">
+      <img src="https://via.placeholder.com/260x150?text=amp+9000" alt="amp 9000">
+      <h3>amp 9000</h3><div class="price">۱۰,۰۰۰,۰۰۰ تومان</div>
+      <a class="buy">افزودن به سبد</a>
+      <a class="details" href="#">جزئیات محصول</a>
+    </div>
+    <div class="card" data-name="pax D230" data-price="۱۲,۰۰۰,۰۰۰ تومان" data-img="">
+      <img src="https://via.placeholder.com/260x150?text=pax+D230" alt="pax D230">
+      <h3>pax D230</h3><div class="price">۱۲,۰۰۰,۰۰۰ تومان</div>
+      <a class="buy">افزودن به سبد</a>
+      <a class="details" href="#">جزئیات محصول</a>
+    </div>
+  </div>
+</div>
+
+<!-- اسلایدر لوازم جانبی -->
+<div class="slider-container">
+  <div class="slider" id="sliderAccessories">
+    <div class="card" data-name="آداپتور شارژ" data-price="۱,۲۰۰,۰۰۰ تومان" data-img="">
+      <h3>آداپتور شارژ</h3><div class="price">۱,۲۰۰,۰۰۰ تومان</div>
+      <a class="buy">افزودن به سبد</a>
+      <a class="details" href="#">جزئیات محصول</a>
+    </div>
+    <div class="card" data-name="کابل شارژ" data-price="۵۰۰,۰۰۰ تومان" data-img="">
+      <h3>کابل شارژ</h3><div class="price">۵۰۰,۰۰۰ تومان</div>
+      <a class="buy">افزودن به سبد</a>
+      <a class="details" href="#">جزئیات محصول</a>
+    </div>
+    <div class="card" data-name="باتری دستگاه" data-price="۶۰۰,۰۰۰ تومان" data-img="">
+      <h3>باتری دستگاه</h3><div class="price">۶۰۰,۰۰۰ تومان</div>
+      <a class="buy">افزودن به سبد</a>
+      <a class="details" href="#">جزئیات محصول</a>
+    </div>
+    <div class="card" data-name="نرم افزار دستگاه" data-price="۷۰۰,۰۰۰ تومان" data-img="">
+      <h3>نرم افزار دستگاه</h3><div class="price">۷۰۰,۰۰۰ تومان</div>
+      <a class="buy">افزودن به سبد</a>
+      <a class="details" href="#">جزئیات محصول</a>
+    </div>
+    <div class="card" data-name="۱۰ تایی رول کاغذ" data-price="۱۲۰,۰۰۰ تومان" data-img="">
+      <h3>۱۰ تایی رول کاغذ</h3><div class="price">۱۲۰,۰۰۰ تومان</div>
+      <a class="buy">افزودن به سبد</a>
+      <a class="details" href="#">جزئیات محصول</a>
+    </div>
+  </div>
+</div>
+
+<!-- فرم ثبت اطلاعات کاربر -->
+<div id="userFormContainer">
+  <form id="userForm">
+    <h3>اطلاعات کاربر</h3>
+    <input type="text" id="usernameInput" placeholder="یوزرنیم خود را وارد کنید" required>
+    <input type="text" id="phoneInput" placeholder="شماره تلفن" required>
+    <button type="submit">ثبت اطلاعات</button>
+  </form>
+</div>
+
+<!-- مدال جزئیات محصول -->
+<div id="productModal">
+  <div id="productContent">
+    <img id="productImg" src="" alt="">
+    <h3 id="productName"></h3>
+    <div class="price" id="productPrice"></div>
+    <button id="addProductBtn">افزودن به سبد خرید</button>
+    <button id="closeProduct">بستن</button>
+  </div>
+</div>
+
+<script>
+// همبرگری
+const menuToggle=document.getElementById('menuToggle');
+const menu=document.getElementById('menu');
+menuToggle.addEventListener('click',()=>{menu.style.display = menu.style.display==='flex'?'none':'flex';});
+
+// اسلایدر خودکار
+function autoSlider(slider){
+    let index=0;
+    const cards=slider.children;
+    const total=cards.length;
+    setInterval(()=>{
+        index=(index+1)%total;
+        slider.style.transform=`translateX(-${index*280}px)`;
+    },3000);
+}
+autoSlider(document.getElementById('sliderDevices'));
+autoSlider(document.getElementById('sliderAccessories'));
+
+// مدیریت کاربر
+const userIcon=document.getElementById('userIcon');
+const userPanel=document.getElementById('userPanel');
+const panelUsername=document.getElementById('panelUsername');
+const panelWallet=document.getElementById('panelWallet');
+const closePanel=document.getElementById('closePanel');
+let user=JSON.parse(localStorage.getItem('user')||'null');
+function updateUserPanel(){if(user){panelUsername.textContent=`یوزرنیم: ${user.username}`; panelWallet.textContent=`کیف پول: ${user.wallet}`;}}
+userIcon.addEventListener('click',()=>{userPanel.style.display=userPanel.style.display==='block'?'none':'block';updateUserPanel();});
+closePanel.addEventListener('click',()=>{userPanel.style.display='none';});
+
+// سبد خرید
+let cart=JSON.parse(localStorage.getItem('cart')||'[]');
+const cartList=document.getElementById('cartList');
+function renderCart(){
+    cartList.innerHTML='<strong>سبد خرید:</strong>';
+    if(cart.length===0){cartList.innerHTML+='<p>سبد خرید خالی است.</p>';return;}
+    cart.forEach((item,i)=>{
+        const div=document.createElement('div');
+        div.className='cart-item';
+        div.innerHTML=`<span>${i+1}. ${item.name} - ${item.price}</span><button data-index="${i}">حذف</button>`;
+        cartList.appendChild(div);
+    });
+    cartList.querySelectorAll('button').forEach(btn=>{
+        btn.addEventListener('click',()=>{cart.splice(btn.dataset.index,1); localStorage.setItem('cart',JSON.stringify(cart)); renderCart();});
+    });
+}
+renderCart();
+
+// قیمت به عدد
+function priceToNumber(price){return Number(price.replace(/,/g,'').replace(/[^\d]/g,''));}
+
+// افزودن محصول
+let currentBtn=null;
+const userForm=document.getElementById('userForm');
+userForm.onsubmit=function(ev){
+    ev.preventDefault();
+    const uname=document.getElementById('usernameInput').value;
+    const phone=document.getElementById('phoneInput').value;
+    user={username:uname,phone:phone,wallet:'1,500,000 تومان'};
+    localStorage.setItem('user',JSON.stringify(user));
+    document.getElementById('userFormContainer').style.display='none';
+    updateUserPanel();
+    if(currentBtn){addProductToCart(currentBtn); currentBtn=null;}
+}
+
+function addProductToCart(btn){
+    const priceNum=priceToNumber(btn.dataset.price);
+    const walletNum=priceToNumber(user.wallet);
+    if(priceNum>walletNum){alert('موجودی کافی نیست!');return;}
+    user.wallet=(walletNum-priceNum).toLocaleString('fa')+' تومان';
+    localStorage.setItem('user',JSON.stringify(user));
+    updateUserPanel();
+    cart.push({name:btn.dataset.name,price:btn.dataset.price});
+    localStorage.setItem('cart',JSON.stringify(cart));
+    renderCart();
+    alert(`${btn.dataset.name} به سبد خرید اضافه شد! ✅`);
+}
+
+// افزودن به سبد خرید کارت
+document.querySelectorAll('.buy').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+        e.preventDefault();
+        if(!user){document.getElementById('userFormContainer').style.display='flex'; currentBtn=btn;}
+        else{addProductToCart(btn);}
+    });
+});
+
+// مدال جزئیات محصول
+const modal=document.getElementById('productModal');
+const productImg=document.getElementById('productImg');
+const productName=document.getElementById('productName');
+const productPrice=document.getElementById('productPrice');
+const addProductBtn=document.getElementById('addProductBtn');
+const closeProduct=document.getElementById('closeProduct');
+
+document.querySelectorAll('.details').forEach(btn=>{
+    btn.addEventListener('click', e=>{
+        e.preventDefault();
+        const card=btn.parentElement;
+        productImg.src=card.dataset.img||'https://via.placeholder.com/260x150?text=محصول';
+        productName.textContent=card.dataset.name;
+        productPrice.textContent=card.dataset.price;
+        addProductBtn.dataset.name=card.dataset.name;
+        addProductBtn.dataset.price=card.dataset.price;
+        modal.style.display='flex';
+    });
+});
+
+closeProduct.addEventListener('click',()=>{modal.style.display='none';});
+addProductBtn.addEventListener('click',()=>{
+    if(!user){document.getElementById('userFormContainer').style.display='flex'; currentBtn=addProductBtn;}
+    else{addProductToCart(addProductBtn);}
+});
+
+// تکمیل خرید
+document.getElementById('checkoutBtn').addEventListener('click',()=>{
+    if(cart.length===0){alert('سبد خرید خالی است!'); return;}
+    alert('خرید شما تکمیل شد ✅');
+    cart=[]; localStorage.setItem('cart',JSON.stringify(cart)); renderCart();
+});
+</script>
+</body>
+</html>
