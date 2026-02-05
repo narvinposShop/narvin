@@ -1,73 +1,50 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>پنل مدیریت</title>
-    <style>
-        body { font-family: Tahoma; margin: 0; }
-        .sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; float: right; padding: 20px; }
-        .content { margin-right: 270px; padding: 20px; }
-        .menu-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #34495e; }
-        .menu-item:hover { background: #34495e; }
-        .product-item { background: #f9f9f9; padding: 15px; margin: 10px 0; border-radius: 5px; }
-        button { background: green; color: white; padding: 5px 10px; border: none; margin: 5px; }
-    </style>
+    <title>ورود</title>
 </head>
-<body>
-    <!-- منوی کناری -->
-    <div class="sidebar">
-        <h2>📊 پنل مدیریت</h2>
-        <div class="menu-item" onclick="showProducts()">📦 محصولات</div>
-        <div class="menu-item" onclick="showOrders()">📋 سفارشات</div>
-        <div class="menu-item" onclick="showUsers()">👥 کاربران</div>
-        <div class="menu-item" onclick="logout()">🚪 خروج</div>
-    </div>
+<body style="text-align:center; padding:50px; background:#f0f0f0;">
     
-    <!-- محتوای اصلی -->
-    <div class="content">
-        <h1 id="pageTitle">مدیریت محصولات</h1>
-        <div id="contentArea">
-            <!-- اینجا محصولات نمایش داده میشن -->
-        </div>
+    <div style="background:white; padding:30px; border-radius:10px; display:inline-block;">
+        <h2>ورود مدیر ناروین پوز</h2>
+        
+        <input type="text" id="user" placeholder="نام کاربری" 
+               style="padding:10px; margin:10px; width:200px;"><br>
+        
+        <input type="password" id="pass" placeholder="رمز عبور"
+               style="padding:10px; margin:10px; width:200px;"><br>
+        
+        <button onclick="checkLogin()" 
+                style="background:green; color:white; padding:10px 20px; border:none; border-radius:5px;">
+            ورود
+        </button>
+        
+        <p style="color:gray; margin-top:20px;">
+            برای تست:<br>
+            نام کاربری: <b>admin</b><br>
+            رمز: <b>123456</b>
+        </p>
     </div>
-    
+
     <script>
-        // چک کن ادمینه یا نه
-        if (!localStorage.getItem('isAdmin')) {
-            window.location.href = 'login.html';
+        function checkLogin() {
+            var username = document.getElementById('user').value;
+            var password = document.getElementById('pass').value;
+            
+            if(username === 'admin' && password === '123456') {
+                // ذخیره تو localStorage
+                localStorage.setItem('admin_logged_in', 'true');
+                // برو به پنل مدیریت
+                window.location.href = 'admin.html';
+            } else {
+                alert('نام کاربری یا رمز عبور اشتباه است!');
+            }
         }
         
-        // نمایش محصولات
-        function showProducts() {
-            document.getElementById('pageTitle').textContent = 'مدیریت محصولات';
-            document.getElementById('contentArea').innerHTML = `
-                <h3>لیست محصولات:</h3>
-                <div class="product-item">
-                    <strong>کش لس T1 Pro</strong><br>
-                    قیمت: ۳۸,۰۰۰,۰۰۰ تومان<br>
-                    <button>✏️ ویرایش</button>
-                    <button>🗑️ حذف</button>
-                </div>
-                <button style="background:blue; margin-top:20px;">➕ افزودن محصول جدید</button>
-            `;
+        // اگر قبلاً لاگین کرده، برو به پنل
+        if(localStorage.getItem('admin_logged_in') === 'true') {
+            window.location.href = 'admin.html';
         }
-        
-        function showOrders() {
-            document.getElementById('pageTitle').textContent = 'سفارشات';
-            document.getElementById('contentArea').innerHTML = '<p>لیست سفارشات اینجا میاد...</p>';
-        }
-        
-        function showUsers() {
-            document.getElementById('pageTitle').textContent = 'کاربران';
-            document.getElementById('contentArea').innerHTML = '<p>لیست کاربران اینجا میاد...</p>';
-        }
-        
-        function logout() {
-            localStorage.removeItem('isAdmin');
-            window.location.href = 'index.html';
-        }
-        
-        // اول محصولات رو نشون بده
-        showProducts();
     </script>
 </body>
 </html>
