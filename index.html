@@ -1,1466 +1,720 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>فروشگاه ناروین پوز - نسخه پیشرفته</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-/* Reset & Base */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Tahoma', 'Segoe UI', sans-serif;
-}
-
-body {
-  background: linear-gradient(135deg, #dff1e0, #ffffff);
-  color: #111;
-  padding-bottom: 70px;
-  min-height: 100vh;
-}
-
-/* Header */
-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 20px;
-  background: linear-gradient(90deg, #0dbf6f, #08a85c);
-  color: white;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-header img.logo {
-  width: 45px;
-  height: 45px;
-  border-radius: 8px;
-  object-fit: cover;
-  border: 2px solid white;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 22px;
-  flex-grow: 1;
-}
-
-#menuToggle {
-  font-size: 28px;
-  cursor: pointer;
-  padding: 5px;
-  transition: transform 0.3s;
-}
-
-#menuToggle:hover {
-  transform: scale(1.1);
-}
-
-#menu {
-  display: none;
-  position: absolute;
-  top: 65px;
-  right: 20px;
-  background: white;
-  width: 220px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  flex-direction: column;
-  z-index: 1001;
-  overflow: hidden;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-#menu a {
-  display: block;
-  padding: 12px 16px;
-  color: #333;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  transition: all 0.2s;
-}
-
-#menu a:hover {
-  background: #f0fff8;
-  color: #0dbf6f;
-  padding-right: 20px;
-}
-
-#menu a i {
-  margin-left: 8px;
-}
-
-/* User Section */
-#userIcon {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #00ffae, #0dbf6f);
-  color: #003322;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  cursor: pointer;
-  margin-left: 10px;
-  transition: transform 0.3s;
-  border: 2px solid white;
-}
-
-#userIcon:hover {
-  transform: scale(1.05);
-}
-
-#userPanel {
-  display: none;
-  position: absolute;
-  top: 65px;
-  right: 80px;
-  background: white;
-  padding: 16px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-  width: 250px;
-  z-index: 1001;
-  animation: fadeIn 0.3s ease;
-}
-
-#userPanel p {
-  margin: 8px 0;
-  padding: 6px;
-  background: #f9f9f9;
-  border-radius: 6px;
-}
-
-#userPanel button {
-  width: 100%;
-  padding: 10px;
-  background: #0dbf6f;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-
-#userPanel button:hover {
-  background: #08a85c;
-}
-
-/* Sliders */
-.section-title {
-  padding: 15px 20px 5px;
-  font-size: 20px;
-  color: #0dbf6f;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.section-title i {
-  color: #ff6b6b;
-}
-
-.slider-container {
-  overflow: hidden;
-  padding: 10px 20px 30px;
-  position: relative;
-}
-
-.slider {
-  display: flex;
-  gap: 20px;
-  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-/* Cards */
-.card {
-  min-width: 250px;
-  background: white;
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-  color: #111;
-  flex-shrink: 0;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
-}
-
-.card.badge-special::before {
-  content: "ویژه";
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: linear-gradient(45deg, #ff6b6b, #ff8e53);
-  color: white;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
-  z-index: 2;
-}
-
-.card.badge-discount::before {
-  content: "30% تخفیف";
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: linear-gradient(45deg, #36d1dc, #5b86e5);
-  color: white;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: bold;
-  z-index: 2;
-}
-
-.card img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  transition: transform 0.5s;
-}
-
-.card:hover img {
-  transform: scale(1.03);
-}
-
-.card h4 {
-  margin: 8px 0;
-  font-size: 18px;
-  color: #222;
-}
-
-.card .price {
-  font-size: 18px;
-  font-weight: bold;
-  color: #0dbf6f;
-  margin: 8px 0;
-}
-
-.card .old-price {
-  font-size: 14px;
-  color: #999;
-  text-decoration: line-through;
-  margin-left: 10px;
-}
-
-.card .rating {
-  color: #ffc107;
-  margin: 8px 0;
-  font-size: 14px;
-}
-
-.card .rating span {
-  color: #666;
-  margin-right: 5px;
-  font-size: 13px;
-}
-
-.card button {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 8px;
-  font-weight: bold;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.card .buy {
-  background: linear-gradient(90deg, #0dbf6f, #08a85c);
-  color: white;
-}
-
-.card .buy:hover {
-  background: linear-gradient(90deg, #08a85c, #067a45);
-}
-
-.card .details {
-  background: #f0f8ff;
-  color: #36d1dc;
-}
-
-.card .details:hover {
-  background: #e1f0ff;
-}
-
-/* Cart */
-#cartContainer {
-  background: white;
-  padding: 20px;
-  position: fixed;
-  top: 70px;
-  right: 20px;
-  border-radius: 16px;
-  width: 300px;
-  max-height: 500px;
-  overflow-y: auto;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  display: none;
-  z-index: 1002;
-  animation: slideIn 0.3s ease;
-}
-
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(20px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-.cart-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.cart-item-info {
-  flex-grow: 1;
-}
-
-.cart-item-name {
-  font-weight: bold;
-}
-
-.cart-item-price {
-  color: #0dbf6f;
-  font-size: 14px;
-}
-
-.cart-item button {
-  padding: 6px 12px;
-  background: #ff6b6b;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 12px;
-  transition: background 0.3s;
-}
-
-.cart-item button:hover {
-  background: #ff4757;
-}
-
-.cart-total {
-  margin-top: 15px;
-  padding-top: 15px;
-  border-top: 2px solid #0dbf6f;
-  font-size: 18px;
-  font-weight: bold;
-  color: #222;
-  display: flex;
-  justify-content: space-between;
-}
-
-.cart-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.cart-actions button {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s;
-}
-
-#checkoutBtn {
-  background: linear-gradient(90deg, #0dbf6f, #08a85c);
-  color: white;
-}
-
-#clearCartBtn {
-  background: linear-gradient(90deg, #ff6b6b, #ff8e53);
-  color: white;
-}
-
-.cart-empty {
-  text-align: center;
-  padding: 20px;
-  color: #666;
-}
-
-.cart-empty i {
-  font-size: 40px;
-  color: #ccc;
-  margin-bottom: 10px;
-}
-
-/* Modals */
-.modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.85);
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  animation: fadeIn 0.3s;
-}
-
-.modal-content {
-  background: white;
-  padding: 25px;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
-  color: #111;
-  animation: popIn 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-}
-
-@keyframes popIn {
-  0% { transform: scale(0.8); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-.modal-content img {
-  width: 100%;
-  max-height: 200px;
-  object-fit: contain;
-  border-radius: 12px;
-  margin-bottom: 15px;
-}
-
-.modal-content h3 {
-  color: #0dbf6f;
-  margin: 10px 0;
-}
-
-.modal-content .description {
-  color: #666;
-  line-height: 1.6;
-  margin: 15px 0;
-  text-align: justify;
-}
-
-.modal-content button {
-  padding: 12px;
-  width: 100%;
-  margin-top: 10px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.modal-close {
-  background: #ff6b6b;
-  color: white;
-}
-
-.modal-close:hover {
-  background: #ff4757;
-}
-
-/* User Form */
-#userFormContainer {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  align-items: center;
-  justify-content: center;
-  z-index: 3000;
-}
-
-#userForm {
-  background: #fff;
-  padding: 25px;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 350px;
-  text-align: center;
-  color: #111;
-}
-
-#userForm h3 {
-  color: #0dbf6f;
-  margin-bottom: 20px;
-}
-
-#userForm input {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  transition: border 0.3s;
-}
-
-#userForm input:focus {
-  border-color: #0dbf6f;
-  outline: none;
-}
-
-#userForm button {
-  padding: 12px;
-  width: 100%;
-  background: linear-gradient(90deg, #0dbf6f, #08a85c);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  margin-top: 15px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-  transition: all 0.3s;
-}
-
-#userForm button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 10px rgba(13, 191, 111, 0.3);
-}
-
-/* Bottom Navigation */
-.nav-bottom {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  display: flex;
-  justify-content: space-around;
-  padding: 12px 0;
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 999;
-}
-
-.nav-bottom button {
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: 12px;
-  color: #666;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: all 0.3s;
-  padding: 8px;
-  border-radius: 10px;
-  min-width: 60px;
-}
-
-.nav-bottom button:hover, .nav-bottom button.active {
-  color: #0dbf6f;
-  background: rgba(13, 191, 111, 0.1);
-  transform: translateY(-5px);
-}
-
-.nav-bottom img {
-  width: 24px;
-  height: 24px;
-  margin-bottom: 4px;
-}
-
-.nav-bottom .badge {
-  position: absolute;
-  top: -5px;
-  right: 5px;
-  background: #ff6b6b;
-  color: white;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  font-size: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Toast Notification */
-.toast {
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  background: #0dbf6f;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  z-index: 10000;
-  animation: slideUp 0.3s, fadeOut 0.3s 2s forwards;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes fadeOut {
-  to { opacity: 0; }
-}
-
-/* Loading */
-.loading {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: white;
-  animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فروشگاه ناروین پوز | دستگاه‌های کش لس</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tahoma', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #8a2be2 0%, #9370db 50%, #ba55d3 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* دایره‌های متحرک */
+        .bg-circles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite linear;
+        }
+        
+        .circle:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 15%;
+            right: 10%;
+            animation-delay: 0s;
+        }
+        
+        .circle:nth-child(2) {
+            width: 180px;
+            height: 180px;
+            top: 65%;
+            left: 15%;
+            animation-delay: 2s;
+        }
+        
+        /* Header */
+        header {
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(15px);
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            animation: slideDown 0.8s ease;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, #fff, #e6e6fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo-text p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        /* منو همبرگری */
+        .menu-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        
+        .hamburger-menu span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+            transition: 0.3s;
+        }
+        
+        #menuToggle:checked ~ .hamburger-menu span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+        
+        #menuToggle:checked ~ .hamburger-menu span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        #menuToggle:checked ~ .hamburger-menu span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+            list-style: none;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s;
+        }
+        
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+        
+        /* User Icon */
+        .user-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .user-icon:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        
+        /* Main Content */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeIn 1s ease;
+        }
+        
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: titleGlow 2s infinite alternate;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        
+        /* Products Section */
+        .products-section {
+            padding: 40px 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        /* Product Cards */
+        .product-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: cardFloat 6s infinite ease-in-out;
+            position: relative;
+        }
+        
+        .product-card:nth-child(2) {
+            animation-delay: 1s;
+        }
+        
+        .product-card:nth-child(3) {
+            animation-delay: 2s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .product-card.badge::before {
+            content: "پرفروش";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 2;
+            animation: badgePulse 2s infinite;
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        
+        .product-info {
+            padding: 25px;
+        }
+        
+        .product-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+        
+        .product-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 15px 0;
+            color: #ffcc00;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-buy {
+            background: linear-gradient(45deg, #0dbf6f, #08a85c);
+            color: white;
+        }
+        
+        .btn-details {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Cart */
+        .cart-icon {
+            position: relative;
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            background: #ff6b6b;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: bounce 1s infinite alternate;
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 40px 25px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #ffcc00;
+        }
+        
+        .footer-section p {
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        /* Admin Button */
+        .admin-btn {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            background: linear-gradient(45deg, #0dbf6f, #08a85c);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(13, 191, 111, 0.3);
+            z-index: 999;
+            font-size: 22px;
+            transition: all 0.3s;
+        }
+        
+        .admin-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 15px 35px rgba(13, 191, 111, 0.4);
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-40px) rotate(180deg);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        
+        @keyframes titleGlow {
+            0% {
+                text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            }
+            100% {
+                text-shadow: 0 5px 25px rgba(255, 255, 255, 0.4);
+            }
+        }
+        
+        @keyframes cardFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        @keyframes badgePulse {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
+            }
+        }
+        
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        /* Mobile Menu */
+        #menuToggle {
+            display: none;
+        }
+        
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 280px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 80px 30px 30px;
+            transition: right 0.4s ease;
+            z-index: 999;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        #menuToggle:checked ~ .mobile-menu {
+            right: 0;
+        }
+        
+        .mobile-menu a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .mobile-menu a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            padding-right: 25px;
+        }
+        
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 998;
+        }
+        
+        #menuToggle:checked ~ .menu-overlay {
+            display: block;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .hamburger-menu {
+                display: flex;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .product-card {
+                animation: none;
+            }
+            
+            .product-card:hover {
+                transform: translateY(-8px);
+            }
+            
+            .admin-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+                bottom: 20px;
+                left: 20px;
+            }
+        }
+        
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body>
-
-<header>
-  <img src="https://i.postimg.cc/XNcpcTWv/Screenshot-2026-01-31-15-28-04-087-com-google-android-googlequicksearchbox-edit.jpg" class="logo">
-  <h1>ناروین پوز <small>فروشگاه تخصصی</small></h1>
-  
-  <div id="userIcon">
-    <i class="fas fa-user"></i>
-  </div>
-  
-  <div id="menuToggle">
-    <i class="fas fa-bars"></i>
-  </div>
-  
-  <div id="menu">
-    <a href="#"><i class="fas fa-home"></i> صفحه اصلی</a>
-    <a href="#"><i class="fas fa-headset"></i> پشتیبانی</a>
-    <a href="#" id="showCartBtn"><i class="fas fa-shopping-cart"></i> سبد خرید <span id="cartCountBadge">0</span></a>
-    <a href="#"><i class="fas fa-gift"></i> تخفیف‌ها</a>
-    <a href="#"><i class="fas fa-star"></i> محصولات ویژه</a>
-    <a href="#"><i class="fas fa-info-circle"></i> درباره ما</a>
-  </div>
-  
-  <div id="userPanel">
-    <p id="panelUsername"><i class="fas fa-user"></i> کاربر: مهمان</p>
-    <p id="panelWallet"><i class="fas fa-wallet"></i> کیف پول: 0 تومان</p>
-    <p id="panelPhone"><i class="fas fa-phone"></i> تلفن: ثبت نشده</p>
-    <button id="closePanel"><i class="fas fa-times"></i> بستن پنل</button>
-  </div>
-</header>
-
-<!-- Main Slider - Devices -->
-<h2 class="section-title">
-  <i class="fas fa-mobile-alt"></i>
-  دستگاه‌های کش لس
-</h2>
-<div class="slider-container">
-  <div class="slider" id="sliderDevices">
-    <!-- Product 1 -->
-    <div class="card badge-special" data-name="کش لس T1 Pro" data-price="۳۸,۰۰۰,۰۰۰" data-img="https://i.postimg.cc/28xYtD96/ksh-ls-syar-T1-pro.jpg" 
-         data-description="دستگاه کش لس حرفه‌ای با سرعت بالا و اتصال پایدار - مناسب برای کسب‌وکارهای بزرگ">
-      <img src="https://i.postimg.cc/28xYtD96/ksh-ls-syar-T1-pro.jpg">
-      <h4>کش لس T1 Pro</h4>
-      <div class="rating">
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star-half-alt"></i>
-        <span>(۴.۵)</span>
-      </div>
-      <div>
-        <span class="price">۳۸,۰۰۰,۰۰۰ تومان</span>
-      </div>
-      <button class="buy" data-product="کش لس T1 Pro" data-price="۳۸,۰۰۰,۰۰۰">
-        <i class="fas fa-cart-plus"></i> افزودن به سبد
-      </button>
-      <button class="details">
-        <i class="fas fa-info-circle"></i> جزئیات محصول
-      </button>
+    <!-- دایره‌های متحرک پس‌زمینه -->
+    <div class="bg-circles">
+        <div class="circle"></div>
+        <div class="circle"></div>
     </div>
     
-    <!-- Product 2 -->
-    <div class="card badge-discount" data-name="PAX S90" data-price="۷,۰۰۰,۰۰۰" data-img="https://i.postimg.cc/K8q2Z52F/sfhh-rngy-s90-min.jpg"
-         data-description="دستگاه همراه با طراحی زیبا - مناسب برای مغازه‌های کوچک و متوسط">
-      <img src="https://i.postimg.cc/K8q2Z52F/sfhh-rngy-s90-min.jpg">
-      <h4>PAX S90</h4>
-      <div class="rating">
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="far fa-star"></i>
-        <span>(۴.۰)</span>
-      </div>
-      <div>
-        <span class="price">۷,۰۰۰,۰۰۰ تومان</span>
-        <span class="old-price">۱۰,۰۰۰,۰۰۰</span>
-      </div>
-      <button class="buy" data-product="PAX S90" data-price="۷,۰۰۰,۰۰۰">
-        <i class="fas fa-cart-plus"></i> افزودن به سبد
-      </button>
-      <button class="details">
-        <i class="fas fa-info-circle"></i> جزئیات محصول
-      </button>
-    </div>
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <img src="https://i.postimg.cc/XNcpcTWv/Screenshot-2026-01-31-15-28-04-087-com-google-android-googlequicksearchbox-edit.jpg" 
+                 alt="لوگوی ناروین پوز" class="logo">
+            <div class="logo-text">
+                <h1>ناروین پوز</h1>
+                <p>فروشگاه تخصصی دستگاه‌های کش لس</p>
+            </div>
+        </div>
+        
+        <!-- منو همبرگری -->
+        <input type="checkbox" id="menuToggle">
+        <label for="menuToggle" class="hamburger-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+        
+        <!-- منوی موبایل -->
+        <div class="mobile-menu">
+            <a href="#"><i class="fas fa-home"></i> صفحه اصلی</a>
+            <a href="#products"><i class="fas fa-box-open"></i> محصولات</a>
+            <a href="#"><i class="fas fa-info-circle"></i> درباره ما</a>
+            <a href="#"><i class="fas fa-headset"></i> پشتیبانی</a>
+            <a href="login.html"><i class="fas fa-user-shield"></i> پنل مدیریت</a>
+            <a href="#"><i class="fas fa-shopping-cart"></i> سبد خرید</a>
+        </div>
+        <div class="menu-overlay"></div>
+        
+        <!-- منوی دسکتاپ -->
+        <nav class="nav-menu">
+            <a href="#"><i class="fas fa-home"></i> صفحه اصلی</a>
+            <a href="#products"><i class="fas fa-box-open"></i> محصولات</a>
+            <a href="#"><i class="fas fa-info-circle"></i> درباره ما</a>
+            <a href="#"><i class="fas fa-headset"></i> پشتیبانی</a>
+        </nav>
+        
+        <!-- آیکون کاربر و سبد خرید -->
+        <div class="menu-container">
+            <a href="#cart" class="cart-icon">
+                <i class="fas fa-shopping-cart" style="font-size: 1.3rem;"></i>
+                <span class="cart-badge">۳</span>
+            </a>
+            
+            <div class="user-icon">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+    </header>
     
-    <!-- Product 3 -->
-    <div class="card" data-name="AMP 9000" data-price="۱۰,۰۰۰,۰۰۰" data-img="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-         data-description="دستگاه چندکاره با قابلیت‌های پیشرفته پرداخت و گزارش‌گیری">
-      <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">
-      <h4>AMP 9000</h4>
-      <div class="rating">
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <span>(۵.۰)</span>
-      </div>
-      <div>
-        <span class="price">۱۰,۰۰۰,۰۰۰ تومان</span>
-      </div>
-      <button class="buy" data-product="AMP 9000" data-price="۱۰,۰۰۰,۰۰۰">
-        <i class="fas fa-cart-plus"></i> افزودن به سبد
-      </button>
-      <button class="details">
-        <i class="fas fa-info-circle"></i> جزئیات محصول
-      </button>
-    </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h2>به ناروین پوز خوش آمدید</h2>
+        <p>مرکز تخصصی فروش دستگاه‌های کش لس و کارتخوان با بهترین کیفیت و قیمت در بازار ایران</p>
+        <div style="margin-top: 30px;">
+            <button class="btn btn-buy" onclick="scrollToProducts()">
+                <i class="fas fa-shopping-bag"></i> مشاهده محصولات
+            </button>
+        </div>
+    </section>
     
-    <!-- Product 4 -->
-    <div class="card" data-name="کش لس Lite" data-price="۲۵,۰۰۰,۰۰۰" data-img="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-         data-description="نسخه سبک و اقتصادی برای شروع کسب‌وکار">
-      <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">
-      <h4>کش لس Lite</h4>
-      <div class="rating">
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="far fa-star"></i>
-        <span>(۴.۰)</span>
-      </div>
-      <div>
-        <span class="price">۲۵,۰۰۰,۰۰۰ تومان</span>
-      </div>
-      <button class="buy" data-product="کش لس Lite" data-price="۲۵,۰۰۰,۰۰۰">
-        <i class="fas fa-cart-plus"></i> افزودن به سبد
-      </button>
-      <button class="details">
-        <i class="fas fa-info-circle"></i> جزئیات محصول
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Accessories Slider -->
-<h2 class="section-title">
-  <i class="fas fa-plug"></i>
-  لوازم جانبی
-</h2>
-<div class="slider-container">
-  <div class="slider" id="sliderAccessories">
-    <!-- Accessory 1 -->
-    <div class="card" data-name="آداپتور شارژ سریع" data-price="۱,۲۰۰,۰۰۰" data-img="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-         data-description="آداپتور شارژ سریع با قدرت ۳۳ وات - قابلیت شارژ سریع دستگاه‌های مختلف">
-      <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">
-      <h4>آداپتور شارژ سریع</h4>
-      <div class="rating">
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="far fa-star"></i>
-        <span>(۴.۰)</span>
-      </div>
-      <div>
-        <span class="price">۱,۲۰۰,۰۰۰ تومان</span>
-      </div>
-      <button class="buy" data-product="آداپتور شارژ سریع" data-price="۱,۲۰۰,۰۰۰">
-        <i class="fas fa-cart-plus"></i> افزودن به سبد
-      </button>
-      <button class="details">
-        <i class="fas fa-info-circle"></i> جزئیات محصول
-      </button>
-    </div>
-    
-    <!-- Accessory 2 -->
-    <div class="card" data-name="کابل شارژ USB-C" data-price="۵۰۰,۰۰۰" data-img="https://images.unsplash.com/photo-1586816879360-004f5b0c51e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-         data-description="کابل شارژ USB-C با طول ۱.۵ متر - مقاوم و با دوام">
-      <img src="https://images.unsplash.com/photo-1586816879360-004f5b0c51e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">
-      <h4>کابل شارژ USB-C</h4>
-      <div class="rating">
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star-half-alt"></i>
-        <span>(۴.۵)</span>
-      </div>
-      <div>
-        <span class="price">۵۰۰,۰۰۰ تومان</span>
-      </div>
-      <button class="buy" data-product="کابل شارژ USB-C" data-price="۵۰۰,۰۰۰">
-        <i class="fas fa-cart-plus"></i> افزودن به سبد
-      </button>
-      <button class="details">
-        <i class="fas fa-info-circle"></i> جزئیات محصول
-      </button>
-    </div>
-    
-    <!-- Accessory 3 -->
-    <div class="card" data-name="کیف محافظ" data-price="۷۵۰,۰۰۰" data-img="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-         data-description="کیف محافظ ضد ضربه و ضد آب برای دستگاه‌های کش لس">
-      <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">
-      <h4>کیف محافظ</h4>
-      <div class="rating">
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <span>(۵.۰)</span>
-      </div>
-      <div>
-        <span class="price">۷۵۰,۰۰۰ تومان</span>
-      </div>
-      <button class="buy" data-product="کیف محافظ" data-price="۷۵۰,۰۰۰">
-        <i class="fas fa-cart-plus"></i> افزودن به سبد
-      </button>
-      <button class="details">
-        <i class="fas fa-info-circle"></i> جزئیات محصول
-      </button>
-    </div>
-    
-    <!-- Accessory 4 -->
-    <div class="card" data-name="پایه نگهدارنده" data-price="۴۰۰,۰۰۰" data-img="https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-         data-description="پایه نگهدارنده فلزی با قابلیت تنظیم زاویه">
-      <img src="https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">
-      <h4>پایه نگهدارنده</h4>
-      <div class="rating">
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="far fa-star"></i>
-        <span>(۴.۰)</span>
-      </div>
-      <div>
-        <span class="price">۴۰۰,۰۰۰ تومان</span>
-      </div>
-      <button class="buy" data-product="پایه نگهدارنده" data-price="۴۰۰,۰۰۰">
-        <i class="fas fa-cart-plus"></i> افزودن به سبد
-      </button>
-      <button class="details">
-        <i class="fas fa-info-circle"></i> جزئیات محصول
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Special Offers -->
-<h2 class="section-title">
-  <i class="fas fa-fire"></i>
-  پیشنهادات ویژه
-</h2>
-<div class="slider-container">
-  <div class="slider" id="sliderOffers">
-    <div class="card badge-discount" data-name="پکیج کسب‌وکار" data-price="۴۵,۰۰۰,۰۰۰" data-img="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
-         data-description="پکیج کامل شامل دستگاه + لوازم جانبی + نصب و راه‌اندازی">
-      <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80">
-      <h4>پکیج کسب‌وکار</h4>
-      <div class="rating">
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star"></i>
-        <i class="fas fa-star-half-alt"></i>
-        <span>(۴.۵)</span>
-      </div>
-      <div>
-        <span class="price">۴۵,۰۰۰,۰۰۰ تومان</span>
-        <span class="old-price">۵۵,۰۰۰,۰۰۰</span>
-      </div>
-      <button class="buy" data-product="پکیج کسب‌وکار" data-price="۴۵,۰۰۰,۰۰۰">
-        <i class="fas fa-cart-plus"></i> افزودن به سبد
-      </button>
-      <button class="details">
-        <i class="fas fa-info-circle"></i> جزئیات محصول
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Cart Modal -->
-<div id="cartContainer">
-  <div class="cart-header">
-    <h3><i class="fas fa-shopping-cart"></i> سبد خرید شما</h3>
-    <button id="closeCartBtn" style="background:none;border:none;font-size:20px;color:#666;cursor:pointer;">
-      <i class="fas fa-times"></i>
-    </button>
-  </div>
-  <div id="cartItems"></div>
-  <div class="cart-total">
-    <span>جمع کل:</span>
-    <span id="cartTotalPrice">۰ تومان</span>
-  </div>
-  <div class="cart-actions">
-    <button id="clearCartBtn">
-      <i class="fas fa-trash"></i> خالی کردن سبد
-    </button>
-    <button id="checkoutBtn">
-      <i class="fas fa-check"></i> تسویه حساب
-    </button>
-  </div>
-</div>
-
-<!-- Product Detail Modal -->
-<div id="productModal" class="modal">
-  <div class="modal-content">
-    <img id="productImg" src="" alt="محصول">
-    <h3 id="productName"></h3>
-    <div class="rating" id="productRating"></div>
-    <p id="productPrice" class="price"></p>
-    <p class="description" id="productDescription"></p>
-    <button id="addProductBtn">
-      <i class="fas fa-cart-plus"></i> افزودن به سبد خرید
-    </button>
-    <button id="closeProduct" class="modal-close">
-      <i class="fas fa-times"></i> بستن
-    </button>
-  </div>
-</div>
-
-<!-- User Form Modal -->
-<div id="userFormContainer" class="modal">
-  <form id="userForm">
-    <h3><i class="fas fa-user-edit"></i> تکمیل اطلاعات کاربری</h3>
-    <input type="text" id="usernameInput" placeholder="نام و نام خانوادگی" required>
-    <input type="tel" id="phoneInput" placeholder="شماره تلفن همراه" required>
-    <input type="email" id="emailInput" placeholder="ایمیل (اختیاری)">
-    <input type="text" id="addressInput" placeholder="آدرس (اختیاری)">
-    <button type="submit">
-      <i class="fas fa-save"></i> ذخیره اطلاعات
-    </button>
-    <button type="button" id="skipUserForm" style="background:#666;margin-top:5px;">
-      <i class="fas fa-forward"></i> رد کردن
-    </button>
-  </form>
-</div>
-
-<!-- Bottom Navigation -->
-<div class="nav-bottom">
-  <button onclick="window.scrollTo(0,0)" class="active">
-    <img src="https://i.postimg.cc/7Z2s7BZX/home-icon.png" alt="خانه">
-    خانه
-  </button>
-  <button id="cartBtnBottom">
-    <img src="https://i.postimg.cc/KjLQ1f2G/cart-icon.png" alt="سبد خرید">
-    سبد خرید
-    <span class="badge" id="bottomCartBadge">0</span>
-  </button>
-  <button onclick="showUserPanel()">
-    <img src="https://i.postimg.cc/Prz7bYxS/user-icon.png" alt="پروفایل">
-    پروفایل
-  </button>
-  <button onclick="showSpecialOffers()">
-    <img src="https://i.postimg.cc/3xFv9s1D/info-icon.png" alt="تخفیف‌ها">
-    تخفیف‌ها
-  </button>
-  <button onclick="showSupport()">
-    <i class="fas fa-headset" style="font-size:20px;margin-bottom:4px;"></i>
-    پشتیبانی
-  </button>
-</div>
-
-<!-- Toast Notification Container -->
-<div id="toastContainer"></div>
-
-<script>
-// ==================== GLOBAL VARIABLES ====================
-let user = JSON.parse(localStorage.getItem('user')) || null;
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-let currentProductBtn = null;
-
-// ==================== DOM ELEMENTS ====================
-const menuToggle = document.getElementById('menuToggle');
-const menu = document.getElementById('menu');
-const userIcon = document.getElementById('userIcon');
-const userPanel = document.getElementById('userPanel');
-const panelUsername = document.getElementById('panelUsername');
-const panelWallet = document.getElementById('panelWallet');
-const panelPhone = document.getElementById('panelPhone');
-const closePanel = document.getElementById('closePanel');
-const cartContainer = document.getElementById('cartContainer');
-const cartItems = document.getElementById('cartItems');
-const cartTotalPrice = document.getElementById('cartTotalPrice');
-const cartCountBadge = document.getElementById('cartCountBadge');
-const bottomCartBadge = document.getElementById('bottomCartBadge');
-const productModal = document.getElementById('productModal');
-const userFormContainer = document.getElementById('userFormContainer');
-
-// ==================== MENU & USER PANEL ====================
-menuToggle.addEventListener('click', () => {
-  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-});
-
-userIcon.addEventListener('click', () => {
-  userPanel.style.display = userPanel.style.display === 'block' ? 'none' : 'block';
-  if (userPanel.style.display === 'block') {
-    updateUserPanel();
-  }
-});
-
-closePanel.addEventListener('click', () => {
-  userPanel.style.display = 'none';
-});
-
-function updateUserPanel() {
-  if (user) {
-    panelUsername.innerHTML = `<i class="fas fa-user"></i> کاربر: ${user.username}`;
-    panelWallet.innerHTML = `<i class="fas fa-wallet"></i> کیف پول: ${user.wallet}`;
-    panelPhone.innerHTML = `<i class="fas fa-phone"></i> تلفن: ${user.phone}`;
-  } else {
-    panelUsername.innerHTML = `<i class="fas fa-user"></i> کاربر: مهمان`;
-    panelWallet.innerHTML = `<i class="fas fa-wallet"></i> کیف پول: 0 تومان`;
-    panelPhone.innerHTML = `<i class="fas fa-phone"></i> تلفن: ثبت نشده`;
-  }
-}
-
-// ==================== AUTO SLIDERS ====================
-function autoSlider(slider) {
-  let index = 0;
-  const cards = slider.children;
-  const total = cards.length;
-  
-  if (total <= 1) return;
-  
-  setInterval(() => {
-    index = (index + 1) % total;
-    slider.style.transform = `translateX(-${index * 270}px)`;
-    
-    // Reset to start if at the end
-    if (index === total - 1) {
-      setTimeout(() => {
-        slider.style.transition = 'none';
-        slider.style.transform = `translateX(0)`;
-        setTimeout(() => {
-          slider.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-        }, 50);
-      }, 3000);
-    }
-  }, 4000);
-}
-
-// Initialize sliders
-document.querySelectorAll('.slider').forEach(slider => {
-  autoSlider(slider);
-});
-
-// ==================== CART SYSTEM ====================
-function updateCartBadges() {
-  const count = cart.length;
-  cartCountBadge.textContent = count;
-  bottomCartBadge.textContent = count;
-  bottomCartBadge.style.display = count > 0 ? 'flex' : 'none';
-}
-
-function priceToNumber(price) {
-  if (!price) return 0;
-  return Number(price.toString().replace(/,/g, '').replace(/[^\d]/g, ''));
-}
-
-function renderCart() {
-  cartItems.innerHTML = '';
-  
-  if (cart.length === 0) {
-    cartItems.innerHTML = `
-      <div class="cart-empty">
-        <i class="fas fa-shopping-cart"></i>
-        <p>سبد خرید شما خالی است</p>
-      </div>
-    `;
-    cartTotalPrice.textContent = '۰ تومان';
-    return;
-  }
-  
-  let total = 0;
-  
-  cart.forEach((item, index) => {
-    total += priceToNumber(item.price);
-    
-    const itemElement = document.createElement('div');
-    itemElement.className = 'cart-item';
-    itemElement.innerHTML = `
-      <div class="cart-item-info">
-        <div class="cart-item-name">${index + 1}. ${item.name}</div>
-        <div class="cart-item-price">${item.price} تومان</div>
-      </div>
-      <button class="remove-item" data-index="${index}">
-        <i class="fas fa-trash"></i>
-      </button>
-    `;
-    
-    cartItems.appendChild(itemElement);
-  });
-  
-  // Add total
-  cartTotalPrice.textContent = total.toLocaleString('fa') + ' تومان';
-  
-  // Add event listeners to remove buttons
-  document.querySelectorAll('.remove-item').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const index = parseInt(btn.dataset.index);
-      cart.splice(index, 1);
-      localStorage.setItem('cart', JSON.stringify(cart));
-      renderCart();
-      updateCartBadges();
-      showToast('محصول از سبد خرید حذف شد', 'error');
-    });
-  });
-}
-
-function addToCart(productName, productPrice) {
-  const priceNum = priceToNumber(productPrice);
-  
-  // Check user wallet if logged in
-  if (user) {
-    const walletNum = priceToNumber(user.wallet);
-    if (priceNum > walletNum) {
-      showToast('موجودی کیف پول کافی نیست!', 'error');
-      return false;
-    }
-    
-    // Deduct from wallet
-    user.wallet = (walletNum - priceNum).toLocaleString('fa') + ' تومان';
-    localStorage.setItem('user', JSON.stringify(user));
-    updateUserPanel();
-  }
-  
-  // Add to cart
-  cart.push({
-    name: productName,
-    price: productPrice + ' تومان'
-  });
-  
-  localStorage.setItem('cart', JSON.stringify(cart));
-  renderCart();
-  updateCartBadges();
-  
-  showToast(`"${productName}" به سبد خرید اضافه شد`, 'success');
-  return true;
-}
-
-// ==================== CART UI CONTROLS ====================
-document.getElementById('showCartBtn').addEventListener('click', showCart);
-document.getElementById('cartBtnBottom').addEventListener('click', showCart);
-document.getElementById('closeCartBtn').addEventListener('click', hideCart);
-
-function showCart() {
-  cartContainer.style.display = 'block';
-  renderCart();
-}
-
-function hideCart() {
-  cartContainer.style.display = 'none';
-}
-
-// Clear cart button
-document.getElementById('clearCartBtn').addEventListener('click', () => {
-  if (cart.length === 0) return;
-  
-  if (confirm('آیا از خالی کردن سبد خرید مطمئن هستید؟')) {
-    // Return money to wallet if user is logged in
-    if (user) {
-      let total = 0;
-      cart.forEach(item => {
-        total += priceToNumber(item.price);
-      });
-      
-      const walletNum = priceToNumber(user.wallet);
-      user.wallet = (walletNum + total).toLocaleString('fa') + ' تومان';
-      localStorage.setItem('user', JSON.stringify(user));
-      updateUserPanel();
-    }
-    
-    cart = [];
-    localStorage.setItem('cart', JSON.stringify(cart));
-    renderCart();
-    updateCartBadges();
-    showToast('سبد خرید خالی شد', 'warning');
-  }
-});
-
-// Checkout button
-document.getElementById('checkoutBtn').addEventListener('click', () => {
-  if (cart.length === 0) {
-    showToast('سبد خرید شما خالی است', 'error');
-    return;
-  }
-  
-  if (!user) {
-    showToast('لطفاً ابتدا وارد شوید', 'error');
-    userFormContainer.style.display = 'flex';
-    return;
-  }
-  
-  const total = cart.reduce((sum, item) => sum + priceToNumber(item.price), 0);
-  
-  if (confirm(`آیا از خرید به مبلغ ${total.toLocaleString('fa')} تومان اطمینان دارید؟`)) {
-    showToast('سفارش شما با موفقیت ثبت شد!', 'success');
-    
-    // In a real app, here you would send order to server
-    setTimeout(() => {
-      cart = [];
-      localStorage.setItem('cart', JSON.stringify(cart));
-      renderCart();
-      updateCartBadges();
-      hideCart();
-    }, 1500);
-  }
-});
-
-// ==================== PRODUCT MODAL ====================
-document.querySelectorAll('.details').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const card = this.closest('.card');
-    const productImg = document.getElementById('productImg');
-    const productName = document.getElementById('productName');
-    const productPrice = document.getElementById('productPrice');
-    const productDescription = document.getElementById('productDescription');
-    const productRating = document.getElementById('productRating');
-    const addProductBtn = document.getElementById('addProductBtn');
-    
-    // Set product data
-    productImg.src = card.dataset.img || 'https://via.placeholder.com/400x300?text=تصویر+محصول';
-    productName.textContent = card.dataset.name;
-    productPrice.textContent = card.dataset.price + ' تومان';
-    productDescription.textContent = card.dataset.description || 'توضیحات این محصول وارد نشده است.';
-    
-    // Copy rating from card
-    const ratingHtml = card.querySelector('.rating')?.innerHTML || 
-      `<i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i> <span>(۴.۰)</span>`;
-    productRating.innerHTML = ratingHtml;
-    
-    // Set data on add button
-    addProductBtn.dataset.name = card.dataset.name;
-    addProductBtn.dataset.price = card.dataset.price;
-    
-    // Show modal
-    productModal.style.display = 'flex';
-  });
-});
-
-// Close product modal
-document.getElementById('closeProduct').addEventListener('click', () => {
-  productModal.style.display = 'none';
-});
-
-// Add product from modal
-document.getElementById('addProductBtn').addEventListener('click', function() {
-  const productName = this.dataset.name;
-  const productPrice = this.dataset.price;
-  
-  if (!user) {
-    // Show user form
-    currentProductBtn = this;
-    userFormContainer.style.display = 'flex';
-  } else {
-    if (addToCart(productName, productPrice)) {
-      productModal.style.display = 'none';
-    }
-  }
-});
-
-// ==================== USER FORM ====================
-document.getElementById('userForm').addEventListener('submit', function(e) {
-  e.preventDefault();
-  
-  const username = document.getElementById('usernameInput').value;
-  const phone = document.getElementById('phoneInput').value;
-  const email = document.getElementById('emailInput').value;
-  const address = document.getElementById('addressInput').value;
-  
-  user = {
-    username: username,
-    phone: phone,
-    email: email || '',
-    address: address || '',
-    wallet: '۱,۵۰۰,۰۰۰ تومان'
-  };
-  
-  localStorage.setItem('user', JSON.stringify(user));
-  userFormContainer.style.display = 'none';
-  updateUserPanel();
-  showToast('اطلاعات کاربری با موفقیت ذخیره شد', 'success');
-  
-  // If there was a pending product, add it now
-  if (currentProductBtn) {
-    const productName = currentProductBtn.dataset.name;
-    const productPrice = currentProductBtn.dataset.price;
-    addToCart(productName, productPrice);
-    currentProductBtn = null;
-  }
-  
-  // Clear form
-  this.reset();
-});
-
-// Skip user form
-document.getElementById('skipUserForm').addEventListener('click', () => {
-  userFormContainer.style.display = 'none';
-  showToast('می‌توانید بعداً اطلاعات خود را تکمیل کنید', 'warning');
-  currentProductBtn = null;
-});
-
-// ==================== BUY BUTTONS ====================
-document.querySelectorAll('.buy').forEach(btn => {
-  btn.addEventListener('click', function() {
-    const productName = this.dataset.product;
-    const productPrice = this.dataset.price;
-    
-    if (!user) {
-      currentProductBtn = this;
-      userFormContainer.style.display = 'flex';
-    } else {
-      addToCart(productName, productPrice);
-    }
-  });
-});
-
-// ==================== TOAST NOTIFICATIONS ====================
-function showToast(message, type = 'info') {
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  
-  let icon = 'fas fa-info-circle';
-  if (type === 'success') icon = 'fas fa-check-circle';
-  if (type === 'error') icon = 'fas fa-exclamation-circle';
-  if (type === 'warning') icon = 'fas fa-exclamation-triangle';
-  
-  toast.innerHTML = `
-    <i class="${icon}"></i>
-    <span>${message}</span>
-  `;
-  
-  // Style based on type
-  if (type === 'success') toast.style.background = '#0dbf6f';
-  if (type === 'error') toast.style.background = '#ff6b6b';
-  if (type === 'warning') toast.style.background = '#ffa502';
-  
-  document.getElementById('toastContainer').appendChild(toast);
-  
-  // Remove after animation
-  setTimeout(() => {
-    toast.remove();
-  }, 2500);
-}
-
-// ==================== HELPER FUNCTIONS ====================
-function showUserPanel() {
-  userPanel.style.display = 'block';
-  updateUserPanel();
-}
-
-function showSpecialOffers() {
-  document.querySelector('.section-title:nth-child(5)').scrollIntoView({ 
-    behavior: 'smooth' 
-  });
-  showToast('پیشنهادات ویژه برای شما نمایش داده شد', 'info');
-}
-
-function showSupport() {
-  alert('پشتیبانی ناروین پوز\n📞 تلفن: ۰۲۱-۱۲۳۴۵۶۷۸\n📧 ایمیل: support@narvinpos.com\n🕒 ساعت کاری: ۹ صبح تا ۵ عصر');
-}
-
-// ==================== INITIALIZATION ====================
-document.addEventListener('DOMContentLoaded', function() {
-  updateUserPanel();
-  updateCartBadges();
-  renderCart();
-  
-  // Close cart when clicking outside
-  document.addEventListener('click', function(event) {
-    if (!cartContainer.contains(event.target) && 
-        !event.target.closest('#showCartBtn') && 
-        !event.target.closest('#cartBtnBottom') &&
-        cartContainer.style.display === 'block') {
-      hideCart();
-    }
-    
-    // Close menu when clicking outside
-    if (!menu.contains(event.target) && 
-        !event.target.closest('#menuToggle') && 
-        menu.style.display === 'flex') {
-      menu.style.display = 'none';
-    }
-    
-    // Close user panel when clicking outside
-    if (!userPanel.contains(event.target) && 
-        !event.target.closest('#userIcon') && 
-        userPanel.style.display === 'block') {
-      userPanel.style.display = 'none';
-    }
-  });
-  
-  // Welcome message
-  setTimeout(() => {
-    if (!user) {
-      showToast('سلام! برای خرید بهتر، لطفاً اطلاعات خود را تکمیل کنید', 'info');
-    }
-  }, 1000);
-});
-</script>
-
-</body>
-</html>
-```html
-<!-- اینو توی index.html هرجا خواستی بذار -->
-<a href="login.html" 
-   style="position: fixed;
-          bottom: 20px;
-          left: 20px;
-          background: green;
-          color: white;
-          padding: 10px 15px;
-          border-radius: 10px;
-          text-decoration: none;">
-   🔧 پنل مدیریت
-</a>
-```
-<!-- این رو اضافه کن -->
-<a href="login.html" style="position:fixed; bottom:20px; left:20px; background:green; color:white; padding:10px 15px; border-radius:10px; text-decoration:none;">
-   پنل مدیریت
-</a>
+    <!-- Products Section -->
+    <section class="products-section" id="products">
+        <h2 class="section-title">
+            <i class="fas fa-gem"></i>
+            محصولات ویژه
+        </h2>
+        
+        <div class="products-grid">
+            <!-- Product 1 -->
+            <div class="product-card badge">
+                <img src="https://i.postimg.cc/28xYtD96/ksh-ls-syar-T1-pro.jpg" 
+                     alt="کش لس T1 Pro" class="product-image">
+                <div class="product-info">
+                    <h3>کش لس T1 Pro</h3>
+                    <p>دستگاه حرفه‌ای با سرعت بالا و اتصال پایدار</p>
+                    <div class="product-price">۳۸,۰۰۰,۰۰۰ تومان</div>
+                    <div class="product-actions">
+                        <button class="btn btn-buy" onclick="addT
