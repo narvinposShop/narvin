@@ -1,0 +1,73 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html>
+<head>
+    <title>پنل مدیریت</title>
+    <style>
+        body { font-family: Tahoma; margin: 0; }
+        .sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; float: right; padding: 20px; }
+        .content { margin-right: 270px; padding: 20px; }
+        .menu-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #34495e; }
+        .menu-item:hover { background: #34495e; }
+        .product-item { background: #f9f9f9; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        button { background: green; color: white; padding: 5px 10px; border: none; margin: 5px; }
+    </style>
+</head>
+<body>
+    <!-- منوی کناری -->
+    <div class="sidebar">
+        <h2>📊 پنل مدیریت</h2>
+        <div class="menu-item" onclick="showProducts()">📦 محصولات</div>
+        <div class="menu-item" onclick="showOrders()">📋 سفارشات</div>
+        <div class="menu-item" onclick="showUsers()">👥 کاربران</div>
+        <div class="menu-item" onclick="logout()">🚪 خروج</div>
+    </div>
+    
+    <!-- محتوای اصلی -->
+    <div class="content">
+        <h1 id="pageTitle">مدیریت محصولات</h1>
+        <div id="contentArea">
+            <!-- اینجا محصولات نمایش داده میشن -->
+        </div>
+    </div>
+    
+    <script>
+        // چک کن ادمینه یا نه
+        if (!localStorage.getItem('isAdmin')) {
+            window.location.href = 'login.html';
+        }
+        
+        // نمایش محصولات
+        function showProducts() {
+            document.getElementById('pageTitle').textContent = 'مدیریت محصولات';
+            document.getElementById('contentArea').innerHTML = `
+                <h3>لیست محصولات:</h3>
+                <div class="product-item">
+                    <strong>کش لس T1 Pro</strong><br>
+                    قیمت: ۳۸,۰۰۰,۰۰۰ تومان<br>
+                    <button>✏️ ویرایش</button>
+                    <button>🗑️ حذف</button>
+                </div>
+                <button style="background:blue; margin-top:20px;">➕ افزودن محصول جدید</button>
+            `;
+        }
+        
+        function showOrders() {
+            document.getElementById('pageTitle').textContent = 'سفارشات';
+            document.getElementById('contentArea').innerHTML = '<p>لیست سفارشات اینجا میاد...</p>';
+        }
+        
+        function showUsers() {
+            document.getElementById('pageTitle').textContent = 'کاربران';
+            document.getElementById('contentArea').innerHTML = '<p>لیست کاربران اینجا میاد...</p>';
+        }
+        
+        function logout() {
+            localStorage.removeItem('isAdmin');
+            window.location.href = 'index.html';
+        }
+        
+        // اول محصولات رو نشون بده
+        showProducts();
+    </script>
+</body>
+</html>

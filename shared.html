@@ -1,0 +1,14 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><script>// این فایل رو ذخیره کن به نام shared.js
+const products = [
+    { id: 1, name: "کش لس T1 Pro", price: "۳۸,۰۰۰,۰۰۰ تومان" },
+    { id: 2, name: "PAX S90", price: "۷,۰۰۰,۰۰۰ تومان" },
+    { id: 3, name: "AMP 9000", price: "۱۰,۰۰۰,۰۰۰ تومان" }
+];
+
+function getProducts() {
+    return products;
+}
+
+function addProduct(name, price) {
+    products.push({ id: products.length + 1, name, price });
+}</script>
